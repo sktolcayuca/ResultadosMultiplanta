@@ -269,8 +269,10 @@ footer{border-top:1px solid var(--border);padding:14px 28px;display:flex;justify
 
   <!-- TAB RESUMEN -->
   <div id="tab-resumen" class="tab-panel active">
+    <div id="seccionKpisConsolidados">
     <div class="section-title">KPIs Consolidados — Todas las Plantas</div>
     <div class="kpi-grid" id="kpiResumen"></div>
+    </div>
     <div class="section-title">Comparativo por Planta</div>
     <div class="plantas-grid" id="plantasCards"></div>
     <div class="charts-grid">
@@ -2362,6 +2364,10 @@ function applySession(user) {
   // Aplicar permisos a tabs
   applyTabPermissions(user);
 
+  // Ocultar KPIs consolidados si es usuario de planta específica
+  const secKpis = document.getElementById('seccionKpisConsolidados');
+  if (secKpis) secKpis.style.display = user.planta !== 'full' ? 'none' : '';
+
   // Filtro de planta para devoluciones y diario
   if (user.planta !== 'full') {
     applyPlantaFilter(user.planta);
@@ -2448,6 +2454,8 @@ function doLogout(expired = false) {
 
   // Resetear tabs a estado original
   document.querySelectorAll('.tab-btn').forEach(b => b.style.display = '');
+  const secKpis = document.getElementById('seccionKpisConsolidados');
+  if (secKpis) secKpis.style.display = '';
   const sel = document.getElementById('filterPlantaDevoluciones');
   if (sel) { Array.from(sel.options).forEach(o => o.style.display = ''); sel.disabled = false; }
   const selD = document.getElementById('filterPlantaDiario');
