@@ -149,10 +149,10 @@ main{padding:24px 28px;display:none;}
 .kpi-card.blue::before{background:var(--accent3);}
 .kpi-card.orange::before{background:var(--accent2);}
 .kpi-card.green::before{background:#00cc88;}
-.kpi-label{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
-.kpi-value{font-family:var(--font-display);font-size:42px;line-height:1;color:var(--text);}
+.kpi-label{font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.kpi-value{font-family:var(--font-display);font-size:52px;line-height:1;color:var(--text);}
 .kpi-unit{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:3px;}
-.kpi-meta{font-family:var(--font-mono);font-size:9px;margin-top:6px;}
+.kpi-meta{font-family:var(--font-mono);font-size:10px;margin-top:8px;font-weight:500;}
 .up{color:#00cc88;}.down{color:var(--danger);}.neutral{color:var(--text-muted);}
 .progress-track{margin-top:8px;height:2px;background:var(--border);}
 .progress-fill{height:100%;background:var(--accent);transition:width 1s ease;}
@@ -318,6 +318,7 @@ footer{border-top:1px solid var(--border);padding:14px 28px;display:flex;justify
     <button class="tab-btn" onclick="switchTab('glama')">🟦 Glama</button>
     <button class="tab-btn" onclick="switchTab('desa')">🟧 Desa</button>
     <button class="tab-btn" onclick="switchTab('devoluciones')">↩️ Devoluciones</button>
+    <button class="tab-btn" onclick="switchTab('honeycomb')">🍯 Honeycomb</button>
     <button class="tab-btn" onclick="switchTab('diario')">📅 Detalle Diario</button>
   </div>
 
@@ -592,7 +593,30 @@ footer{border-top:1px solid var(--border);padding:14px 28px;display:flex;justify
   </div>
 
   <!-- TAB DIARIO -->
-  <div id="tab-diario" class="tab-panel">
+  <div id="tab-honeycomb" class="tab-panel">
+    <div class="periodo-banner" id="periodoBannerHoneycomb" style="display:none;">
+      <div class="periodo-item">
+        <div class="periodo-label">PERÍODO</div>
+        <div class="periodo-val" id="periodoHoneycomb"></div>
+      </div>
+      <div class="periodo-sep"></div>
+      <div class="periodo-item">
+        <div class="periodo-label">CORTE</div>
+        <div class="periodo-val" id="corteHoneycomb"></div>
+      </div>
+      <div class="periodo-sep"></div>
+      <div class="periodo-item">
+        <div class="periodo-label">ÚLTIMA CARGA</div>
+        <div class="periodo-val" id="ultimaCargaHoneycomb"></div>
+      </div>
+    </div>
+    <main style="display:block;">
+      <div class="section-title">🍯 HONEYCOMB — PRODUCCIÓN Y MERMA</div>
+      <div id="kpiHoneycomb" class="kpi-grid"></div>
+      <div id="compHoneycomb" class="comp-grid"></div>
+    </main>
+  </div>
+    <div id="tab-diario" class="tab-panel">
     <div class="filter-group" style="margin-bottom:16px;">
       <span class="filter-label" style="color:var(--text-dim);">PLANTA</span>
       <select id="filterPlantaDiario" onchange="applyFilters()" style="background:var(--surface);color:var(--text);border:1px solid var(--border);">
@@ -2294,7 +2318,7 @@ function updateHeaderLogo(tabName) {
 }
 
 function switchTab(name) {
-  const tabs = ['resumen','sk','glama','desa','devoluciones','diario'];
+  const tabs = ['resumen','sk','glama','desa','devoluciones','honeycomb','diario'];
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',tabs[i]===name));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===`tab-${name}`));
   updateHeaderLogo(name);
