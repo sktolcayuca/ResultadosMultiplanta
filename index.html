@@ -692,18 +692,20 @@ const PLANTA_LOGOS = { SK: LOGO_SK, Glama: LOGO_GLAMA, Desa: LOGO_DESA };
 
 // Asignar logos a los tabs
 function assignTabLogos() {
-  if (typeof PLANTA_LOGOS !== 'undefined') {
-    const logoTabSK    = document.getElementById('logoTabSK');
-    const logoTabGlama = document.getElementById('logoTabGlama');
-    const logoTabDesa  = document.getElementById('logoTabDesa');
-    if (logoTabSK)    logoTabSK.src    = PLANTA_LOGOS['SK'];
-    if (logoTabGlama) logoTabGlama.src = PLANTA_LOGOS['Glama'];
-    if (logoTabDesa)  logoTabDesa.src  = PLANTA_LOGOS['Desa'];
-  }
+  setTimeout(() => {
+    if (typeof PLANTA_LOGOS !== 'undefined') {
+      const logoTabSK    = document.getElementById('logoTabSK');
+      const logoTabGlama = document.getElementById('logoTabGlama');
+      const logoTabDesa  = document.getElementById('logoTabDesa');
+      if (logoTabSK && PLANTA_LOGOS['SK'])       logoTabSK.src    = PLANTA_LOGOS['SK'];
+      if (logoTabGlama && PLANTA_LOGOS['Glama']) logoTabGlama.src = PLANTA_LOGOS['Glama'];
+      if (logoTabDesa && PLANTA_LOGOS['Desa'])   logoTabDesa.src  = PLANTA_LOGOS['Desa'];
+    }
+  }, 100);
 }
 // Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', assignTabLogos);
-// También ejecutar inmediatamente por si ya está cargado
+// También ejecutar con delay por si ya está cargado
 assignTabLogos();
 
 
@@ -1195,11 +1197,8 @@ async function loadData() {
     // Setear logos en tabs de planta
     if (typeof PLANTA_LOGOS !== 'undefined') {
       const logoTabSK    = document.getElementById('logoTabSK');
-      const logoTabGlama = document.getElementById('logoTabGlama');
-      const logoTabDesa  = document.getElementById('logoTabDesa');
-      if (logoTabSK)    logoTabSK.src    = PLANTA_LOGOS['SK'];
-      if (logoTabGlama) logoTabGlama.src = PLANTA_LOGOS['Glama'];
-      if (logoTabDesa)  logoTabDesa.src  = PLANTA_LOGOS['Desa'];
+      if (logoTabSK) logoTabSK.src = PLANTA_LOGOS['SK'];
+      // Glama y Desa se asignan en assignTabLogos() al inicio
     }
   } catch(e) {
     console.error('❌ ERROR EN LOADDATA:', e);
