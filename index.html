@@ -151,8 +151,8 @@ main{padding:24px 28px;display:none;}
 .kpi-card.green::before{background:#00cc88;}
 .kpi-label{font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
 .kpi-value{font-family:var(--font-display);font-size:52px;line-height:1;color:var(--text);}
-.kpi-unit{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:3px;}
-.kpi-meta{font-family:var(--font-mono);font-size:10px;margin-top:8px;font-weight:500;}
+.kpi-unit{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);margin-top:6px;font-weight:500;}
+.kpi-meta{font-family:var(--font-mono);font-size:12px;margin-top:8px;font-weight:500;line-height:1.6;}
 .up{color:#00cc88;}.down{color:var(--danger);}.neutral{color:var(--text-muted);}
 .progress-track{margin-top:8px;height:2px;background:var(--border);}
 .progress-fill{height:100%;background:var(--accent);transition:width 1s ease;}
@@ -1760,6 +1760,7 @@ function renderPlanta(planta, datos, devol, meta, allFiltered, mes, anio, corte)
       <div class="kpi-value">${fmt(s.pctPagada,2)}</div>
       <div class="kpi-unit">% sobre producción</div>
       <div class="kpi-meta"><strong>${fmt(s.mermaPagada,0)}</strong> kg pagados</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((s.pctPagada/20)*100,100)}%;background:linear-gradient(90deg,#00cc88,#00f5aa);"></div></div>
     </div>
     <div class="kpi-card ${s.pctProc<=metaProcPct?'green':'danger'}">
       <div class="kpi-label">% Merma Proceso</div>
@@ -1773,6 +1774,7 @@ function renderPlanta(planta, datos, devol, meta, allFiltered, mes, anio, corte)
       <div class="kpi-value">${fmt(pctMermaTotal,2)}</div>
       <div class="kpi-unit">Pagada + Proceso</div>
       <div class="kpi-meta"><strong>${fmt(mermaTotalKg,0)}</strong> kg totales</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((pctMermaTotal/30)*100,100)}%;"></div></div>
     </div>
 
   `;
