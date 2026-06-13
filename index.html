@@ -97,6 +97,47 @@ main{padding:24px 28px;display:none;}
 /* SECTION TITLE */
 .section-title{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+/* KPIS DARK SECTION */
+.kpis-dark-section {
+  background: linear-gradient(135deg, #090e1a 0%, #0d1525 100%);
+  padding: 20px 28px;
+  margin: -24px -28px 22px -28px;
+  border-radius: 0;
+}
+.kpis-dark-section .section-title {
+  color: #5ba8ff;
+  letter-spacing: 2px;
+}
+.kpis-dark-section .kpi-grid {
+  margin-bottom: 0;
+}
+.kpis-dark-section .kpi-card {
+  background: linear-gradient(135deg, rgba(13,21,37,0.9) 0%, rgba(9,14,26,0.95) 100%);
+  border: 1px solid rgba(29,110,245,0.25);
+}
+.kpis-dark-section .kpi-card:hover {
+  border-color: rgba(29,110,245,0.5);
+}
+.kpis-dark-section .kpi-card::before {
+  background: rgba(29,110,245,0.3);
+}
+.kpis-dark-section .kpi-label {
+  color: #5ba8ff;
+  font-weight: 600;
+}
+.kpis-dark-section .kpi-value {
+  color: #f0f4ff;
+}
+.kpis-dark-section .kpi-unit {
+  color: #8899bb;
+}
+.kpis-dark-section .kpi-meta {
+  color: #5ba8ff;
+}
+.kpis-dark-section .progress-fill {
+  background: linear-gradient(90deg, #1d6ef5, #5ba8ff);
+}
+
 
 /* KPI GRID */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:22px;}
@@ -282,7 +323,7 @@ footer{border-top:1px solid var(--border);padding:14px 28px;display:flex;justify
 
   <!-- TAB RESUMEN -->
   <div id="tab-resumen" class="tab-panel active">
-    <div id="seccionKpisConsolidados">
+    <div id="seccionKpisConsolidados" class="kpis-dark-section">
     <div class="section-title">KPIs Consolidados — Todas las Plantas</div>
     <div class="kpi-grid" id="kpiResumen"></div>
     </div>
