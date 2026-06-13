@@ -1448,16 +1448,19 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
       <div class="kpi-label">Tons Embarcadas — TOTAL</div>
       <div class="kpi-value">${fmt(total.tonEmb)}</div>
       <div class="kpi-unit">kg acumulados 3 plantas — meta: ${fmt(metaTonsTotal,0)} kg</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((total.tonEmb/metaTonsTotal)*100,100)}%;background:linear-gradient(90deg,#00cc88,#00f5aa);"></div></div>
     </div>
     <div class="kpi-card blue">
       <div class="kpi-label">Tons Producidas — TOTAL</div>
       <div class="kpi-value">${fmt(total.tonProd)}</div>
       <div class="kpi-unit">kg producidos 3 plantas</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((total.tonProd/metaTonsTotal)*100,100)}%;background:linear-gradient(90deg,#1d6ef5,#5ba8ff);"></div></div>
     </div>
     <div class="kpi-card blue">
       <div class="kpi-label">m² Producidos — TOTAL</div>
       <div class="kpi-value">${fmt(total.m2,0)}</div>
       <div class="kpi-unit">m² — meta: ${fmt(metaM2Total,0)} m²</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((total.m2/metaM2Total)*100,100)}%;background:linear-gradient(90deg,#00cc88,#00f5aa);"></div></div>
     </div>
     <div class="kpi-card ${total.pctTrim<=META_TRIM_PCT?'green':'danger'}">
       <div class="kpi-label">% Merma Trim — TOTAL</div>
@@ -1471,6 +1474,7 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
       <div class="kpi-value">${fmt(total.pctPagada,2)}</div>
       <div class="kpi-unit">% sobre producción</div>
       <div class="kpi-meta"><strong>${fmt(total.mermaPagada,0)}</strong> kg pagados</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min((total.pctPagada/20)*100,100)}%;background:linear-gradient(90deg,#00cc88,#00f5aa);"></div></div>
     </div>
     <div class="kpi-card ${total.pctProc<=META_PROC_PCT?'green':'danger'}">
       <div class="kpi-label">% Merma Proceso — TOTAL</div>
@@ -1484,6 +1488,7 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
       <div class="kpi-value">${fmt(total.pctPagada+total.pctProc,2)}</div>
       <div class="kpi-unit">Pagada + Proceso</div>
       <div class="kpi-meta"><strong>${fmt(total.mermaPagada+total.mermaProc,0)}</strong> kg totales</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${Math.min(((total.pctPagada+total.pctProc)/30)*100,100)}%;background:linear-gradient(90deg,#1d6ef5,#5ba8ff);"></div></div>
     </div>
     <div class="kpi-card danger">
       <div class="kpi-label">Devoluciones — TOTAL</div>
