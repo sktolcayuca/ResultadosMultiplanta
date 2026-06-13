@@ -692,21 +692,28 @@ const PLANTA_LOGOS = { SK: LOGO_SK, Glama: LOGO_GLAMA, Desa: LOGO_DESA };
 
 // Asignar logos a los tabs
 function assignTabLogos() {
-  setTimeout(() => {
-    if (typeof PLANTA_LOGOS !== 'undefined') {
-      const logoTabSK    = document.getElementById('logoTabSK');
-      const logoTabGlama = document.getElementById('logoTabGlama');
-      const logoTabDesa  = document.getElementById('logoTabDesa');
-      if (logoTabSK && PLANTA_LOGOS['SK'])       logoTabSK.src    = PLANTA_LOGOS['SK'];
-      if (logoTabGlama && PLANTA_LOGOS['Glama']) logoTabGlama.src = PLANTA_LOGOS['Glama'];
-      if (logoTabDesa && PLANTA_LOGOS['Desa'])   logoTabDesa.src  = PLANTA_LOGOS['Desa'];
-    }
-  }, 100);
+  if (typeof PLANTA_LOGOS !== 'undefined') {
+    const logoTabSK    = document.getElementById('logoTabSK');
+    const logoTabGlama = document.getElementById('logoTabGlama');
+    const logoTabDesa  = document.getElementById('logoTabDesa');
+    console.log('Asignando logos:', {SK: !!logoTabSK, Glama: !!logoTabGlama, Desa: !!logoTabDesa});
+    if (logoTabSK && PLANTA_LOGOS['SK'])       logoTabSK.src    = PLANTA_LOGOS['SK'];
+    if (logoTabGlama && PLANTA_LOGOS['Glama']) logoTabGlama.src = PLANTA_LOGOS['Glama'];
+    if (logoTabDesa && PLANTA_LOGOS['Desa'])   logoTabDesa.src  = PLANTA_LOGOS['Desa'];
+  }
 }
-// Ejecutar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', assignTabLogos);
-// También ejecutar con delay por si ya está cargado
-assignTabLogos();
+// Ejecutar múltiples veces para asegurar
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', assignTabLogos);
+} else {
+  assignTabLogos();
+}
+// Ejecutar después de cada tab switch también
+window._originalSwitchTab = switchTab;
+switchTab = function(name) {
+  window._originalSwitchTab(name);
+  setTimeout(assignTabLogos, 50);
+};
 
 
 const CHARTS = {};
