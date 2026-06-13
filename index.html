@@ -1468,11 +1468,11 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
       <div class="kpi-value">${total.devCount}</div>
       <div class="kpi-unit">${fmt(total.devKilos,0)} kg devueltos</div>
     </div>
-    <div class="kpi-card" style="border-left:4px solid #ffd166;background:#fff !important;">
-      <div class="kpi-label" style="color:#ffd166;">GALICIA</div>
-      <div class="kpi-label" style="color:#ffd166;font-size:28px;letter-spacing:2px;margin:12px 0;" id="galiciaPiezas">—</div>
-      <div class="kpi-unit" style="margin-bottom:8px;">piezas</div>
-      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-dim);margin-top:12px;">
+    <div class="kpi-card" style="border-left:4px solid #ffa940;background:linear-gradient(135deg,#090e1a 0%,#0d1525 100%) !important;">
+      <div class="kpi-label" style="color:#5ba8ff;">GALICIA</div>
+      <div class="kpi-label" style="color:#ffa940;font-size:52px;letter-spacing:2px;margin:12px 0;font-family:'Bebas Neue',sans-serif;" id="galiciaPiezas">—</div>
+      <div class="kpi-unit" style="margin-bottom:8px;color:#8899bb;">piezas</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:#5ba8ff;margin-top:12px;">
         <span id="galiciaFecha">—</span>
       </div>
     </div>`;
@@ -2307,7 +2307,14 @@ function updateHeaderLogo(tabName) {
   const img = document.getElementById('headerLogo');
   const ttl = document.getElementById('headerTitle');
   const sub = document.getElementById('headerSub');
-  if (planta && typeof PLANTA_LOGOS !== 'undefined') {
+  
+  if (tabName === 'honeycomb') {
+    // Honeycomb logo - usar data URI
+    img.src = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQ';
+    img.style.display = 'block';
+    ttl.textContent = '🍯 HONEYCOMB';
+    sub.textContent = 'Dashboard Operativo';
+  } else if (planta && typeof PLANTA_LOGOS !== 'undefined') {
     img.src = PLANTA_LOGOS[planta];
     img.style.display = 'block';
     ttl.textContent = planta === 'SK' ? 'SKarton — Tolcayuca' : planta === 'Glama' ? 'Productos GLAMA' : 'DESA';
