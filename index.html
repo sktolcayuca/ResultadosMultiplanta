@@ -665,9 +665,7 @@ const GIDS = {
   DEVOL_SK:         '1860806703',
   DEVOL_DESA:       '681054920',
   DEVOL_GLAMA:      '1600021053',
-  METAS_HONEYCOMB:  '1609355843',
-  DATOS_HONEYCOMB:  '1609355843',
-  DEVOL_HONEYCOMB:  '1609355843'
+  DATOS_HONEYCOMB:  '1609355843'
 };
 
 // Metas fijas de merma
@@ -1144,22 +1142,20 @@ async function loadData() {
     document.getElementById('loadingMsg').textContent = 'CONECTANDO A GOOGLE SHEETS...';
 
     const [
-      txtMetaSK, txtMetaGlama, txtMetaDesa, txtMetaHoneycomb,
+      txtMetaSK, txtMetaGlama, txtMetaDesa,
       txtDatosSK, txtDatosGlama, txtDatosDesa, txtDatosHoneycomb,
-      txtDevolSK, txtDevolGlama, txtDevolDesa, txtDevolHoneycomb
+      txtDevolSK, txtDevolGlama, txtDevolDesa
     ] = await Promise.all([
       fetchCSV(GIDS.METAS_SK),
       fetchCSV(GIDS.METAS_GLAMA),
       fetchCSV(GIDS.METAS_DESA),
-      fetchCSV(GIDS.METAS_HONEYCOMB),
       fetchCSV(GIDS.DATOS_SK),
       fetchCSV(GIDS.DATOS_GLAMA),
       fetchCSV(GIDS.DATOS_DESA),
-      fetchCSV(GIDS.DATOS_HONEYCOMB),
+      GIDS.DATOS_HONEYCOMB ? fetchCSV(GIDS.DATOS_HONEYCOMB) : Promise.resolve(''),
       fetchCSV(GIDS.DEVOL_SK),
       fetchCSV(GIDS.DEVOL_GLAMA),
-      fetchCSV(GIDS.DEVOL_DESA),
-      fetchCSV(GIDS.DEVOL_HONEYCOMB)
+      fetchCSV(GIDS.DEVOL_DESA)
     ]);
 
     document.getElementById('loadingMsg').textContent = 'PROCESANDO...';
@@ -1167,17 +1163,17 @@ async function loadData() {
     METAS.SK       = parseMetas(parseCSV(txtMetaSK));
     METAS.Glama    = parseMetas(parseCSV(txtMetaGlama));
     METAS.Desa     = parseMetas(parseCSV(txtMetaDesa));
-    METAS.Honeycomb = parseMetas(parseCSV(txtMetaHoneycomb));
+    METAS.Honeycomb = []; // Metas vacías para Honeycomb
 
     DATA.SK       = parseDatos(parseCSV(txtDatosSK));
     DATA.Glama    = parseDatos(parseCSV(txtDatosGlama));
     DATA.Desa     = parseDatos(parseCSV(txtDatosDesa));
-    DATA.Honeycomb = parseDatos(parseCSV(txtDatosHoneycomb));
+    DATA.Honeycomb = txtDatosHoneycomb ? parseDatos(parseCSV(txtDatosHoneycomb)) : [];
 
     DEVOLUCIONES.SK       = parseDevoluciones(parseCSV(txtDevolSK),    'SK');
     DEVOLUCIONES.Glama    = parseDevoluciones(parseCSV(txtDevolGlama), 'Glama');
     DEVOLUCIONES.Desa     = parseDevoluciones(parseCSV(txtDevolDesa),  'Desa');
-    DEVOLUCIONES.Honeycomb = parseDevoluciones(parseCSV(txtDevolHoneycomb), 'Honeycomb');
+    DEVOLUCIONES.Honeycomb = []; // Devoluciones vacías para Honeycomb
 
     // Setear filtros al mes/año actual
     document.getElementById('filterAnio').value = anioActual.toString();
