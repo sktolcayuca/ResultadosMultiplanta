@@ -1152,7 +1152,7 @@ async function loadData() {
       fetchCSV(GIDS.DATOS_SK),
       fetchCSV(GIDS.DATOS_GLAMA),
       fetchCSV(GIDS.DATOS_DESA),
-      GIDS.DATOS_HONEYCOMB ? fetchCSV(GIDS.DATOS_HONEYCOMB) : Promise.resolve(''),
+      
       fetchCSV(GIDS.DEVOL_SK),
       fetchCSV(GIDS.DEVOL_GLAMA),
       fetchCSV(GIDS.DEVOL_DESA)
@@ -1168,7 +1168,7 @@ async function loadData() {
     DATA.SK       = parseDatos(parseCSV(txtDatosSK));
     DATA.Glama    = parseDatos(parseCSV(txtDatosGlama));
     DATA.Desa     = parseDatos(parseCSV(txtDatosDesa));
-    DATA.Honeycomb = txtDatosHoneycomb ? parseDatos(parseCSV(txtDatosHoneycomb)) : [];
+    DATA.Honeycomb = [];
 
     DEVOLUCIONES.SK       = parseDevoluciones(parseCSV(txtDevolSK),    'SK');
     DEVOLUCIONES.Glama    = parseDevoluciones(parseCSV(txtDevolGlama), 'Glama');
@@ -1734,6 +1734,16 @@ function renderPareto(allDev) {
 // RENDER POR PLANTA (SK / Glama / Desa)
 // ═══════════════════════════════════════════════════════════════
 function renderPlanta(planta, datos, devol, meta, allFiltered, mes, anio, corte) {
+  // Si es Honeycomb y no hay datos, no renderizar
+  if (planta === 'Honeycomb' && (!datos || datos.length === 0)) {
+    const id = 'Honeycomb';
+    document.getElementById(`kpi${id}`).innerHTML = '<div style="padding:20px;text-align:center;color:#999;font-size:12px;">Honeycomb — Datos pendientes de configuración</div>';
+    document.getElementById(`comp${id}`).innerHTML = '';
+    document.getElementById(`detalle${id}`).innerHTML = '';
+    document.getElementById(`tabla${id}`).innerHTML = '';
+    return;
+  }
+  
   const s  = calcStats(datos);
   const id = planta === 'SK' ? 'SK' : planta;
 
@@ -1745,7 +1755,7 @@ function renderPlanta(planta, datos, devol, meta, allFiltered, mes, anio, corte)
   const filtrarMesPrev = (arr) => arr.filter(r =>
     r.anio===anioPrev && r.mes===mesPrevNum && r.dia<=(corte-1)
   );
-  const plantaKey = { sk: 'SK', glama: 'Glama', desa: 'Desa' }[planta] || planta;
+  const plantaKey = { sk: 'SK', glama: 'Glama', desa: 'Desa', honeycomb: 'Honeycomb' }[planta.toLowerCase()] || planta;
   const datosPrev = filtrarMesPrev(DATA[plantaKey] || []);
   
   // Calcular dinámicamente con fórmula correcta
