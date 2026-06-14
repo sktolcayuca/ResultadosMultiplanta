@@ -1321,6 +1321,13 @@ function applyFilters() {
   renderPlanta('Desa',  filtered.Desa,  filteredDev.Desa,  metas.Desa,  filtered, mes || mesesSelected[0], anio, corte);
   renderDevoluciones(filteredDev, filtered);
   renderTablaDiario(mes || mesesSelected[0], anio, corte);
+  
+  // Honeycomb - envuelto en try-catch para no romper otras plantas
+  try {
+    // TODO: renderizar Honeycomb cuando tenga datos configurados
+  } catch(e) {
+    console.warn('⚠️ Honeycomb aún no configurado:', e);
+  }
 
   if (window.HIST) {
     if (!esMultiple) {
