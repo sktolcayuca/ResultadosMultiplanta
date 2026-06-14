@@ -1330,10 +1330,14 @@ function applyFilters() {
   }
 
   if (window.HIST) {
-    if (!esMultiple) {
-      poblarMejorMes(window.HIST, mes);
-    } else {
-      poblarMejorMesMultiple(window.HIST, mesesSelected);
+    try {
+      if (!esMultiple) {
+        poblarMejorMes(window.HIST, mes);
+      } else {
+        poblarMejorMesMultiple(window.HIST, mesesSelected);
+      }
+    } catch(e) {
+      console.warn('⚠️ Error poblando Mejor Mes (no crítico):', e);
     }
   }
 }
