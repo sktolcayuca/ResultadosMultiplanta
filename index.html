@@ -1598,8 +1598,34 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
   // Cargar datos GALICIA
   cargarGalicia(mes, anio, corte);
 
-  // Tabla resumen
-  document.getElementById('tablaResumen').innerHTML = PLANTAS.map(p => {
+  // Tabla resumen - filtrar por plantas permitidas del usuario
+  const plantasPermitidas = currentUser && currentUser.planta !== 'full' 
+    ? [currentUser.planta] 
+    : PLANTAS;
+  
+  // Recalcular totales solo para plantas permitidas
+  let totalFiltered = { tonEmb:0, tonProd:0, m2:0, mermaTrim:0, mermaProc:0, pctTrim:0, pctPagada:0, pctProc:0, devCount:0, devKilos:0 };
+  plantasPermitidas.forEach(p => {
+    const s  = stats[p];
+    const dv = filteredDev[p];
+    totalFiltered.tonEmb += s.tonEmb;
+    totalFiltered.tonProd += s.tonProd;
+    totalFiltered.m2 += s.m2;
+    totalFiltered.mermaTrim += s.mermaTrim;
+    totalFiltered.mermaProc += s.mermaProc;
+    totalFiltered.devCount += dv.length;
+    totalFiltered.devKilos += sum(dv,'kilos');
+  });
+  // Recalcular porcentajes para plantas permitidas
+  if (totalFiltered.tonEmb > 0) {
+    totalFiltered.pctTrim = (totalFiltered.mermaTrim / totalFiltered.tonEmb) * 100;
+    totalFiltered.pctProc = (totalFiltered.mermaProc / totalFiltered.tonEmb) * 100;
+  }
+  if (totalFiltered.tonProd > 0) {
+    totalFiltered.pctPagada = ((totalFiltered.tonProd - totalFiltered.tonEmb) / totalFiltered.tonProd) * 100;
+  }
+  
+  document.getElementById('tablaResumen').innerHTML = plantasPermitidas.map(p => {
     const s  = stats[p];
     const dv = filteredDev[p];
     return `<tr>
@@ -1615,17 +1641,17 @@ function renderResumen(filtered, filteredDev, metas, mes, anio, corte) {
     </tr>`;
   }).join('') + `<tr style="border-top:2px solid var(--border);background:var(--surface2);">
     <td class="hl" style="font-weight:800;color:var(--accent3)">TOTAL</td>
-    <td class="acc" style="font-weight:700">${fmt(total.tonEmb)}</td>
-    <td style="font-weight:700">${fmt(total.tonProd)}</td>
-    <td style="font-weight:700">${fmt(total.m2,0)}</td>
-    <td style="font-weight:700">${fmt(total.mermaTrim,0)}</td>
-    <td style="font-weight:700">${fmt(total.mermaProc,0)}</td>
-    <td><span class="chip ${chipM(total.pctTrim,META_TRIM_PCT)}">${fmt(total.pctTrim,2)}%</span></td>
-    <td>${fmt(total.pctPagada||0,2)}%</td>
-    <td><span class="chip ${chipM(total.pctProc,META_PROC_PCT)}">${fmt(total.pctProc,2)}%</span></td>
+    <td class="acc" style="font-weight:700">${fmt(totalFiltered.tonEmb)}</td>
+    <td style="font-weight:700">${fmt(totalFiltered.tonProd)}</td>
+    <td style="font-weight:700">${fmt(totalFiltered.m2,0)}</td>
+    <td style="font-weight:700">${fmt(totalFiltered.mermaTrim,0)}</td>
+    <td style="font-weight:700">${fmt(totalFiltered.mermaProc,0)}</td>
+    <td><span class="chip ${chipM(totalFiltered.pctTrim,META_TRIM_PCT)}">${fmt(totalFiltered.pctTrim,2)}%</span></td>
+    <td>${fmt(totalFiltered.pctPagada||0,2)}%</td>
+    <td><span class="chip ${chipM(totalFiltered.pctProc,META_PROC_PCT)}">${fmt(totalFiltered.pctProc,2)}%</span></td>
     <td>—</td>
-    <td class="dng" style="font-weight:700">${total.devCount}</td>
-    <td class="wrn" style="font-weight:700">${fmt(total.devKilos,0)}</td>
+    <td class="dng" style="font-weight:700">${totalFiltered.devCount}</td>
+    <td class="wrn" style="font-weight:700">${fmt(totalFiltered.devKilos,0)}</td>
   </tr>`;
 }
 
@@ -2449,6 +2475,12 @@ function applyTabPermissions(user) {
     if (btnEls[i]) btnEls[i].style.display = allowed ? '' : 'none';
     // panels siempre existen, no ocultamos el panel pero sí el botón
   });
+
+  // Ocultar Honeycomb si usuario no tiene futuras:true
+  const honeyBtn = document.querySelector('button[onclick="switchTab(\'honeycomb\')"]');
+  if (honeyBtn) {
+    honeyBtn.style.display = user.futuras ? '' : 'none';
+  }
 
   // Ir al primer tab permitido
   const firstAllowed = user.tabs[0] || 'resumen';
